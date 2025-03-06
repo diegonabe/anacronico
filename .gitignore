@@ -1,0 +1,21 @@
+```gitignore
+# Archivos de entorno virtual
+env/
+venv/
+
+# Dependencias y configuraciones locales
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de base de datos y migraciones temporales
+*.sqlite3
+migrations/
+
+# Configuración de entorno
+.env
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

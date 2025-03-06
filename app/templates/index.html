@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Anacrónico</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>El Anacrónico</h1>
+    </header>
+    <main>
+        <div class="post-container">
+            {% for contenido in contenidos %}
+                <div class="post">
+                    <h2><a href="{{ url_for('main.show_post', post_id=contenido.id) }}">{{ contenido.titulo }}</a></h2>
+                    <p>{{ contenido.resumen }}</p>
+                    <div class="post-content">{{ contenido.texto }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>
