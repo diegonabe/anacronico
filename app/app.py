@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for
-from app.models import db, Contenido  # Importar la base de datos y el modelo
+from flask import Blueprint, render_template, request, redirect, url_for, session
+from werkzeug.security import check_password_hash
+from app.models import db, Contenido, Usuario  # Importar la base de datos y el modelo
 
 main = Blueprint('main', __name__)
 
@@ -28,3 +29,22 @@ def manager():
 def show_post(post_id):
     post = Contenido.query.get_or_404(post_id)  # Busca el post o muestra error 404 si no existe
     return render_template('post.html', post=post)  # Renderiza la plantilla de lectura
+
+@main.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        pin = request.form['pin']
+        user = Usuario.query.filter_by(username=username).first()
+        
+        if user and check_password_hash(user.pin_hash, pin):
+            session['user_id'] = user.id  # Guardar usuario en sesión
+            return redirect(url_for('main.manager'))
+        
+    return render_template('login.html')
+
+@main.route('/logout')
+def logout():
+    session.pop('user_id', None)  # Eliminar usuario de la sesión
+    flash('Sesión cerrada', 'info')
+    return redirect(url_for('main.login'))
